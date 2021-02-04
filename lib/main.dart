@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 
 // Import the firebase_core plugin
 import 'package:firebase_core/firebase_core.dart';
@@ -47,6 +48,10 @@ class _AppState extends State<App> {
 
     // Show a loader until FlutterFire is initialized
     //if (!_initialized) { }
+
+		bool accepted = false;
+
+		debugPrint('In build, accepted: $accepted');
     return MaterialApp(
 		title: 'hello',
 		home: Scaffold(
@@ -54,7 +59,45 @@ class _AppState extends State<App> {
 				title: Text("hello"),
 			),
 			body: Center(
-				child: GetTileImg("starttile"),
+	
+				child: Column( 
+					mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+					children: <Widget>[
+						Draggable(
+							child:Container(width:100.0, height:100.0, color: Colors.pink,),
+							feedback:Container(width:100.0,
+														height:100.0,
+														color: Colors.pink,
+														),
+							childWhenDragging: Container(),
+							data: 0,
+								),
+						Row(
+							mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+							children: <Widget> [
+								Container(
+								width: 100,
+								height: 100,
+								color: Colors.green,
+								child: DragTarget(
+													builder: (context, List<int> candidateData, rejectedData){
+														debugPrint('candidateData:$candidateData');
+														return accepted ? Container(width:100.0, height:100.0, color: Colors.pink,): Container(width:100.0, height:100.0);
+														}, 
+													onWillAccept: (data) {
+											debugPrint('data: $data');
+														return true;
+														},
+														onAccept: (data) {
+														accepted = true;
+														debugPrint('accepted: $accepted');
+														},
+													),
+												)
+											]
+									j
+							]
+					)
 			),
 		)
 		);
